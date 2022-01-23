@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static FieldLevel.Misc.ClientVariables;
 
 namespace FieldLevel
 {
@@ -26,8 +27,14 @@ namespace FieldLevel
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            
             services.AddControllers();
+            //Add Client for TypiCode
+            services.AddHttpClient(Typicode.Client, client =>
+            {
+                client.BaseAddress = new Uri(Typicode.Url);
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FieldLevel", Version = "v1" });
