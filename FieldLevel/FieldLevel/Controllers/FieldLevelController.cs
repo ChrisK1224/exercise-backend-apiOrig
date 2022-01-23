@@ -30,8 +30,10 @@ namespace FieldLevel.Controllers
                 if (result.IsSuccessStatusCode)
                 {
                     var jsonResult = result.Content.ReadAsStringAsync().Result;
-                    var allPosts = JsonSerializer.Deserialize<TypicodePost[]>(jsonResult);
-                    return Ok(allPosts);
+                    //Group the results by userId and pull only the latest Id per user
+                    var filteredPosts = TypicodePost.GroupAndMax(jsonResult);
+                    //var allPosts = JsonSerializer.Deserialize<TypicodePost[]>(jsonResult);
+                    return Ok(filteredPosts);
                 }
                 else
                 {
